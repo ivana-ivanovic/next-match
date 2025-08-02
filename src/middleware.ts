@@ -6,18 +6,8 @@ export default auth((req) => {
   const {nextUrl} = req;
   const isLoggedIn = !!req.auth;
 
-  console.log("======================================================")
-  console.log(nextUrl.pathname)
-  console.log("===================")
-  console.log(isLoggedIn);
-
   const isPublic = publicRoutes.includes(nextUrl.pathname);
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
-
-  console.log("===================")
-  console.log(isPublic);
-  console.log(isAuthRoute);
-  console.log("===================")
 
   if (isPublic) {
     return NextResponse.next();
