@@ -9,7 +9,6 @@ import { Input } from "@heroui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { GiPadlock } from "react-icons/gi";
-import { set } from "zod";
 
 export default function RegisterForm() {
   const {register, handleSubmit, setError, formState:{errors, isValid, isSubmitting}} = useForm<RegisterSchema>({

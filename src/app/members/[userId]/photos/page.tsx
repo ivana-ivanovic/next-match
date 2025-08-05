@@ -2,7 +2,6 @@ import { getMemberPhotosByUserId, getMemrByUserId } from "@/app/actions/memberAc
 import MemberPhotos from "@/components/MemberPhotos";
 import { CardBody, CardHeader } from "@heroui/card";
 import { Divider } from "@heroui/divider";
-import { Image } from "@heroui/image";
 
 export default async function PhotosPage({params}
     : {params: Promise<{userId: string}>}) {
@@ -17,18 +16,6 @@ export default async function PhotosPage({params}
       <Divider />
       <CardBody>
         <MemberPhotos photos={photos} editing={false} mainImageUrl={member?.image} />
-        {/* <div className="grid grid-col-5 gap-3">
-          {photos && photos.map(photo => (
-            <div key={photo.id}>
-              <Image 
-                width={300}
-                src={photo.url}
-                alt="Image of member"
-                className="object-cover aspect-square"
-              />
-            </div>
-          ))}
-        </div> */}
       </CardBody>
     </>
   )

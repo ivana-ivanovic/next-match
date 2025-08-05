@@ -1,5 +1,34 @@
+import { Prisma } from "@/generated/prisma";
 import {ZodIssue} from "zod";
 
 //discriminated union
 type ActionResult<T> = 
     {status: 'success', data: T} | {status: "error", error: string | ZodIssue[]}
+
+type MessageWithSenderRecipiant = Prisma.MessageGetPayload<{
+    select: {
+        id: true,
+        text: true,
+        created: true,
+        dateRead: true,
+        sender: {
+            select: {userId, name, image}
+        },
+        recipient: {
+            select: {userId, name, image}
+        },
+    }
+}>
+
+type MessageDto = {
+    id: string;
+    text: string;
+    created: string;
+    dateRead: string | null;
+    senderId?: string;
+    senderName?: string;
+    senderImage?: string | null;
+    recipientId?: string;
+    recipientName?: string;
+    recipientImage?: string | null;
+}
