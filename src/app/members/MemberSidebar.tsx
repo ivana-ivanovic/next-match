@@ -1,5 +1,6 @@
 "use client"
 
+import PresenceDot from "@/components/PresenceDot";
 import { Member } from "@/generated/prisma"
 import { calculateAge, transformImageUrl } from "@/lib/util";
 import { Card, CardBody, CardFooter } from "@heroui/card";
@@ -24,11 +25,17 @@ export default function MemberSidebar({member, navLinks}: Props) {
       alt="User profile picture"
       className="rounded-full mt-6 aspect-square object-cover"
     />
-      <CardBody>
+      <CardBody className="overflow-hidden">
         <div className="flex flex-col items-center">
-          <div className="text-2xl">
-            {member.name}, {calculateAge(member.dateOfBirth)}
+          <div className="flex">
+            <div className="text-2xl">
+              {member.name}, {calculateAge(member.dateOfBirth)}
+            </div>
+            <div>
+              <PresenceDot member={member} />
+            </div>
           </div>
+     
           <div className="text-sm text-neutral-500">
             {member.city}, {member.country}
           </div>
