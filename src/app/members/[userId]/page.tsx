@@ -1,7 +1,5 @@
 import { getMemrByUserId } from "@/app/actions/memberActions"
 import CardInnerWraper from "@/components/CardInnerWraper";
-import { CardBody, CardHeader } from "@heroui/card";
-import { Divider } from "@heroui/divider";
 import { notFound } from "next/navigation";
 
 

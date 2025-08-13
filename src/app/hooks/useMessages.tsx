@@ -1,25 +1,29 @@
 import { MessageDto } from "@/types";
 import { useSearchParams, useRouter } from "next/navigation";
-import { useState, useCallback, Key, useEffect } from "react";
-import { deleteMessage } from "../actions/messageActions";
+import { useState, useCallback, Key, useEffect, useRef } from "react";
+import { deleteMessage, getMessagesByContainer } from "../actions/messageActions";
 import useMessageStore from "./useMessageStore";
 import { useShallow } from "zustand/shallow";
 
-export const useMessages = (initialMessages: MessageDto[]) => {
-  const {set, remove, messages, updateUnreadCount} = useMessageStore(
+export const useMessages = (initialMessages: MessageDto[], nextCursor?: string) => {
+  const cursorRef = useRef(nextCursor);
+  const {set, remove, messages, updateUnreadCount, resetMessages} = useMessageStore(
     useShallow(
       state => ({
         set: state.set,
         remove: state.remove,
         messages: state.messages,
-        updateUnreadCount: state.updateUnreadCount
+        updateUnreadCount: state.updateUnreadCount,
+        resetMessages: state.resetMessages
       })
     )
   )
   const searchParams = useSearchParams();
   const router = useRouter();
   const isOutbox =searchParams.get('container') === 'outbox';
-  const [isDeleting, setDeleting] = useState({id: '', loading: false})
+  const container = searchParams.get('container'); 
+  const [isDeleting, setDeleting] = useState({id: '', loading: false});
+  const [loadingMore, setLoadingMore] = useState(false);
   const columns = [
     {key: isOutbox ? 'recipientName' : 'senderName', label: isOutbox ? 'Recipient' : 'Sender' },
     {key: 'text', label: 'Message'},
@@ -29,11 +33,22 @@ export const useMessages = (initialMessages: MessageDto[]) => {
 
   useEffect(() => {
     set(initialMessages);
+    cursorRef.current = nextCursor;
 
     return () => {
-      set([])
+      resetMessages()
     }
-  }, [initialMessages, set])
+  }, [initialMessages, set, resetMessages, nextCursor]);
+
+  const loadMore = useCallback(async () => {
+    if(cursorRef.current){
+      setLoadingMore(true);
+      const {messages, nextCursor} = await getMessagesByContainer(container, cursorRef.current);
+      set(messages);
+      cursorRef.current = nextCursor;
+      setLoadingMore(false);
+    }
+  }, [container, set]);
   
 
   const handleDeleteMessage = useCallback( async (message: MessageDto) => {
@@ -56,7 +71,10 @@ export const useMessages = (initialMessages: MessageDto[]) => {
     deleteMessage: handleDeleteMessage,
     selectRow: handleRowSelected,
     isDeleting,
-    messages
+    messages,
+    loadMore,
+    loadingMore,
+    hasMore: !!cursorRef.current
   }
 
 }

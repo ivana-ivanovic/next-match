@@ -3,7 +3,7 @@
 import { Member, Photo } from "@/generated/prisma";
 import { memberEditSchema, MemberEditSchema } from "@/lib/schemas/memberEditSchema";
 import { ActionResult } from "@/types";
-import { getAuthUserId, getUserById } from "./authActions";
+import { getAuthUserId } from "./authActions";
 import { prisma } from "@/lib/prisma";
 import { cloudinary } from "@/lib/cloudinary";
 
