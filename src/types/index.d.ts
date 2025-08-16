@@ -63,3 +63,4 @@ type GetMemberParams = {
     pageSize?: string;
     withPhoto?: string;
 }
+

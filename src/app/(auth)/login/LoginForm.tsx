@@ -6,10 +6,12 @@ import { Button } from "@heroui/button";
 import { Card, CardBody, CardHeader } from "@heroui/card";
 import { Input } from "@heroui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { GiPadlock } from "react-icons/gi";
 import { toast } from "react-toastify";
+import SocialLogin from "./SocialLogin";
 
 export default function LoginForm() {
 
@@ -65,6 +67,10 @@ export default function LoginForm() {
               isDisabled={!isValid} fullWidth color="secondary" type="submit">
               Login
             </Button>
+            <SocialLogin />
+            <div className="flex justify-center hover:underline text-sm">
+              <Link href='/forgot-password'>Forgot password?</Link>
+            </div>
           </div>
         </form>
       </CardBody>
