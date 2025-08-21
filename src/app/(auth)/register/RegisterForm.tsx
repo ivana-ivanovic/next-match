@@ -1,43 +1,73 @@
 "use client";
 
 import { registerUser } from "@/app/actions/authActions";
-import { profileSchema, registerSchema, RegisterSchema } from "@/lib/schemas/registerSchema";
+import { combinedRegisterSchema, profileSchema, registerSchema, RegisterSchema } from "@/lib/schemas/registerSchema";
 import { handleFormServerErrors } from "@/lib/util";
 import { Button } from "@heroui/button";
 import { Card, CardBody, CardHeader } from "@heroui/card";
-import { Input } from "@heroui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { GiPadlock } from "react-icons/gi";
-import UserDetailsForm from "./UserDetailsForm";
-import { useState } from "react";
 import ProfileForm from "./ProfileForm";
-import { useRouter } from "next/navigation";
+import UserDetailsForm from "./UserDetailsForm";
+import z from "zod";
 
 const stepSchemas = [registerSchema, profileSchema]
+
 
 export default function RegisterForm() {
   const router = useRouter()
   const [activeStep, setActiveStep] = useState(0);
   const currentValidationSchema = stepSchemas[activeStep];
+  const [formData, setFormData] = useState<Partial<RegisterSchema>>({});
+
 
   //const {register, handleSubmit, setError, formState:{errors, isValid, isSubmitting}} = useForm<RegisterSchema>({
-  const methods = useForm<RegisterSchema>({
+  // const methods = useForm<RegisterSchema>({
+  //   resolver: zodResolver(currentValidationSchema),
+  //   mode: "onTouched"
+  // });
+  type StepSchema = typeof stepSchemas[number];
+  type StepFormValues = z.infer<StepSchema>;
+
+  const methods = useForm<StepFormValues>({
     resolver: zodResolver(currentValidationSchema),
     mode: "onTouched"
   });
 
+  
+
   const {setError, handleSubmit, getValues, formState:{errors, isValid, isSubmitting}} = methods
 
   const onSubmit = async () => {
-    //console.log(getValues())
-    const result = await registerUser(getValues());
+    
+    // const result = await registerUser(getValues());
 
-    if(result.status === "success") {
+    // if(result.status === "success") {
+    //   router.push('/register/success');
+    // } else {
+    //   handleFormServerErrors(result, setError);
+    // }
+
+    const finalStepData = getValues();
+    const rawData = { ...formData, ...finalStepData };
+
+    const result = combinedRegisterSchema.safeParse(rawData);
+    if (!result.success) {
+      console.error(result.error.format());
+    return;
+    }
+
+    const finalData: RegisterSchema = result.data;
+    const user = await registerUser(finalData);
+    if(user.status === "success") {
       router.push('/register/success');
     } else {
-      handleFormServerErrors(result, setError);
+      handleFormServerErrors(user, setError);
     }
+
   }
 
   const getStepContent = (step: number) => {
@@ -56,6 +86,9 @@ export default function RegisterForm() {
   }
 
   const onNext = async () => {
+    const stepData = getValues();
+    setFormData(prev => ({ ...prev, ...stepData }));
+
     if (activeStep === stepSchemas.length - 1) {
       await onSubmit();
     } else {

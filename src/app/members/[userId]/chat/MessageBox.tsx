@@ -3,7 +3,6 @@
 import PresenceAvatar from "@/components/PresenceAvatar";
 import { transformImageUrl, timeAgo } from "@/lib/util";
 import { MessageDto } from "@/types";
-import { Avatar } from "@heroui/avatar";
 import clsx from 'clsx'
 import { useEffect, useRef } from "react";
 

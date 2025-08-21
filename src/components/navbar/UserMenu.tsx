@@ -4,7 +4,6 @@
 import { signOutUser } from "@/app/actions/authActions"
 import { transformImageUrl } from "@/lib/util"
 import { Avatar, Dropdown, DropdownItem, DropdownMenu, DropdownSection, DropdownTrigger } from "@heroui/react"
-import { Session } from "next-auth"
 import Link from "next/link"
 
 type Props = {

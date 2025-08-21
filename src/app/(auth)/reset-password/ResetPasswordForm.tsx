@@ -1,6 +1,6 @@
 'use client'
 
-import { generateResetPasswordEmail, resetPassword } from "@/app/actions/authActions";
+import { resetPassword } from "@/app/actions/authActions";
 import CardWrapper from "@/components/CardWrapper";
 import ResultMessage from "@/components/ResultMessage";
 import { ResetPasswordSchema, resetPasswordSchema } from "@/lib/schemas/forgotPasswordSchema";

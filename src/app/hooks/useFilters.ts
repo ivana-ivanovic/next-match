@@ -1,5 +1,5 @@
 import { Selection } from "@heroui/react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { ChangeEvent, useEffect, useTransition } from "react";
 import { FaFemale, FaMale } from "react-icons/fa";
 import { useShallow } from "zustand/shallow";
@@ -8,7 +8,6 @@ import usePaginationStore from "./usePaginationStore";
 
 export const useFilters = () => {
   const pathname = usePathname();
-    const searchParams = useSearchParams();
     const router = useRouter();
     const [isPending, startTransition] = useTransition();
 

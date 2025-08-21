@@ -11,7 +11,7 @@ import { GiPadlock } from "react-icons/gi";
 
 export default function ForgotPasswordForm() {
   const [result, setResult] = useState<ActionResult<string> | null>(null);
-  const {register, handleSubmit, reset, formState:{errors, isSubmitting, isValid}} = useForm();
+  const {register, handleSubmit, reset, formState:{ isSubmitting, isValid}} = useForm();
 
   const onSubmit = async (data: FieldValues) => {
     setResult(await generateResetPasswordEmail(data.email));
