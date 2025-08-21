@@ -1,7 +1,5 @@
 "use client"
 
-import { toggleLikeMember } from "@/app/actions/likeActions";
-import { useRouter } from "next/navigation";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { PiSpinnerGap } from "react-icons/pi";
 

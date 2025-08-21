@@ -1,15 +1,15 @@
 "use client"
 
+import { createMessage } from "@/app/actions/messageActions"
 import { messageSchema, MessageSchema } from "@/lib/schemas/messageSchema"
-import { Input } from "@heroui/input"
+import { handleFormServerErrors } from "@/lib/util"
 import { Button } from "@heroui/button"
+import { Input } from "@heroui/input"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { useParams } from "next/navigation"
+import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { HiPaperAirplane } from "react-icons/hi2"
-import { useParams, useRouter } from "next/navigation"
-import { createMessage } from "@/app/actions/messageActions"
-import { handleFormServerErrors } from "@/lib/util"
-import { useEffect } from "react"
 
 export default function ChatForm() {
   const {register, handleSubmit, reset, setError, setFocus,
@@ -21,7 +21,6 @@ export default function ChatForm() {
       setFocus('text')
     }, [setFocus])
     
-    const router = useRouter();
     const params = useParams<{userId: string}>();
 
     const onSubmit = async (data: MessageSchema) => {
@@ -30,7 +29,6 @@ export default function ChatForm() {
         handleFormServerErrors(result, setError)
       } else {
         reset();
-        router.refresh();
         setTimeout((() => setFocus('text')), 50)
       }
     }
