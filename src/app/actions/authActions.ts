@@ -3,7 +3,7 @@
 
 import { auth, signIn, signOut } from "@/auth";
 import { TokenType, User } from "@/generated/prisma/client";
-import { sendPasswordResetEmail, sendVerificationEmail } from "@/lib/mail";
+import { sendPasswordResetEmail, sendVerificationEmail } from "@/lib/mail-nodemailer";
 import { prisma } from "@/lib/prisma";
 import { LoginSchema } from "@/lib/schemas/loginSchema";
 import { combinedRegisterSchema, ProfileSchema, RegisterSchema } from "@/lib/schemas/registerSchema";
